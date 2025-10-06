@@ -20,6 +20,7 @@ import { categories, products } from "./data/mock";
 function App() {
   // carrito
   const [items, setItems] = useState([]);
+  const clearCart = () => setItems([]);
   const [isCartOpen, setCartOpen] = useState(false);
   const totalQty = useMemo(() => items.reduce((a, it) => a + it.qty, 0), [items]);
   const subtotal = useMemo(() => items.reduce((a, it) => a + it.price * it.qty, 0), [items]);
@@ -70,18 +71,19 @@ function App() {
       <Routes>
         <Route path="/checkout" element={<Checkout />} />
         <Route
-          path="/cart"
-          element={
-            <Cart
-              items={items}
-              inc={inc}
-              dec={dec}
-              remove={remove}
-              subtotal={subtotal}
-              onCheckout={(info) => console.log("checkout info", info)}
-            />
-          }
+      path="/cart"
+      element={
+        <Cart
+          items={items}
+          inc={inc}
+          dec={dec}
+          remove={remove}
+          subtotal={subtotal}
+          onCheckout={(info) => console.log("checkout info", info)}
+          clearCart={clearCart}    
         />
+      }
+    />
         <Route path="/" element={<Home />} />
         <Route
           path="/products"

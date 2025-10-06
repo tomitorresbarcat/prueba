@@ -6,12 +6,13 @@ function Cart({
   inc, dec, remove,     // handlers del padre (App)
   subtotal = 0,         // número
   onCheckout,           // callback al finalizar
+  clearCart,            // 🆕 limpiador del carrito
 }) {
   const navigate = useNavigate();
 
   // entrega: "home" (a domicilio) o "pickup" (retira)
   const [delivery, setDelivery] = useState("home");
-  // cupón local
+  // cupón y datos de envío
   const [coupon, setCoupon] = useState("");
   const [address, setAddress] = useState("");
   const [postal, setPostal]   = useState("");
@@ -28,6 +29,7 @@ function Cart({
   const total = Math.max(0, subtotal + shipping - discount);
 
   const handleCheckout = () => {
+    // validación si es envío a domicilio
     if (delivery === "home") {
       if (!address.trim() || !postal.trim() || !phone.trim()) {
         alert("Por favor completá dirección, código postal y teléfono.");
@@ -44,6 +46,9 @@ function Cart({
       phone:   delivery === "home" ? phone   : null,
     });
 
+    // 🧹 vaciar carrito antes de navegar
+    clearCart?.();
+
     navigate("/checkout", {
       state: {
         items,
@@ -57,6 +62,7 @@ function Cart({
         postal:  delivery === "home" ? postal  : null,
         phone:   delivery === "home" ? phone   : null,
       },
+      replace: true, // evita volver con back al carrito previo
     });
   };
 
@@ -122,8 +128,10 @@ function Cart({
           <span>Retirar en tienda</span>
         </label>
       </section>
+
+      {/* datos de envío */}
       {delivery === "home" && (
-        <section style={{ marginTop: 18,marginBottom:24, display: "grid", gap: 14, maxWidth: 620 }}>
+        <section style={{ marginTop: 18, marginBottom: 24, display: "grid", gap: 24, maxWidth: 620 }}>
           <div>
             <div style={label}>Dirección de envío</div>
             <input
@@ -155,6 +163,7 @@ function Cart({
           </div>
         </section>
       )}
+
       {/* cupón */}
       <section style={{ marginBottom: 22 }}>
         <input
@@ -247,6 +256,7 @@ const checkoutBtn = {
   padding: "14px 18px", borderRadius: 12,
   fontSize: 16,
 };
+
 const label = { marginBottom: 6, fontWeight: 600, color: "#1f2937" };
 
 const inputLg = {

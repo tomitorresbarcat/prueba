@@ -8,6 +8,7 @@ function CartDrawer({ open, onClose, items, inc, dec, remove, subtotal, shipping
     onClose?.();
     navigate(`/product/${id}`);
   };
+
   const handleGoToCart = () => {
     onClose?.();
     navigate("/cart");
@@ -47,11 +48,26 @@ function CartDrawer({ open, onClose, items, inc, dec, remove, subtotal, shipping
                   </div>
                 </div>
 
+                {/* cantidad mejorada */}
                 <div style={styles.qtyBox}>
-                  <button onClick={() => dec(it.id)} style={styles.qtyBtn}>–</button>
-                  <span>{it.qty}</span>
-                  <button onClick={() => inc(it.id)} style={styles.qtyBtn}>+</button>
-                </div>
+  <button
+    onClick={() => dec(it.id)}
+    style={styles.qtyBtn}
+    onMouseEnter={(e) => (e.target.style.background = "#dcfce7")}
+    onMouseLeave={(e) => (e.target.style.background = "transparent")}
+  >
+    –
+  </button>
+  <span style={styles.qtyNum}>{it.qty}</span>
+  <button
+    onClick={() => inc(it.id)}
+    style={styles.qtyBtn}
+    onMouseEnter={(e) => (e.target.style.background = "#dcfce7")}
+    onMouseLeave={(e) => (e.target.style.background = "transparent")}
+  >
+    +
+  </button>
+</div>
 
                 <div style={styles.itemTotal}>${(it.price * it.qty).toLocaleString("es-AR")}</div>
                 <button onClick={() => remove(it.id)} style={styles.removeBtn} title="Quitar">🗑️</button>
@@ -86,13 +102,50 @@ const styles = {
   thumb: { width: 56, height: 56, objectFit: "cover", borderRadius: 8, border: "1px solid #e5e7eb", cursor: "pointer" },
   itemTitle: { fontWeight: 600, fontSize: 14 },
   linkBtnInline: { border: "none", background: "transparent", color: "#111827", textAlign: "left", padding: 0, cursor: "pointer" },
-  qtyBox: { display: "flex", alignItems: "center", gap: 10, border: "1px solid #e5e7eb", borderRadius: 999, padding: "6px 10px", minWidth: 90, justifyContent: "space-between" },
-  qtyBtn: { border: "none", background: "transparent", fontSize: 18, cursor: "pointer" },
-  itemTotal: { width: 90, textAlign: "right", fontWeight: 600 },
+    // === Cantidad (chip) ===
+  qtyBox: {
+    display: "inline-flex",          // bloque en línea
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 12,                         // separación pareja
+    boxSizing: "border-box",         // evita desbordes raros
+    border: "1px solid #e5e7eb",
+    borderRadius: 999,
+    padding: "6px 12px",
+    minWidth: 96,                    // asegura ancho suficiente para - 1 +
+    background: "#f9fafb",
+  },
+  qtyBtn: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 26,
+    height: 26,
+    border: "none",
+    background: "transparent",
+    borderRadius: "50%",
+    fontSize: 18,
+    fontWeight: 500,
+    color: "#111827",
+    cursor: "pointer",
+    lineHeight: 1,
+    transition: "background 0.15s ease, transform 0.05s ease",
+  },
+  qtyNum: {
+    minWidth: 18,
+    textAlign: "center",
+    fontSize: 15,
+    fontWeight: 500,
+    color: "#111827",
+    lineHeight: 1,
+  },
+
+  itemTotal: { width: 80, textAlign: "right", fontWeight: 600 },
   removeBtn: { border: "none", background: "transparent", cursor: "pointer" },
   footer: { borderTop: "1px solid #e5e7eb", padding: 16, display: "grid", gap: 10 },
   row: { display: "flex", alignItems: "center", justifyContent: "space-between" },
   checkoutBtn: { marginTop: 6, border: "none", background: "#22c55e", color: "#fff", padding: "12px 14px", borderRadius: 10, fontSize: 16, cursor: "pointer" },
 };
+
 
 export default CartDrawer;
