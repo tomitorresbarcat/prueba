@@ -1,0 +1,32 @@
+/* Reset básico */
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0; /* saca el espacio blanco arriba */
+  font-family: system-ui, sans-serif;
+}
+
+/* El root no debe limitar ancho ni tener padding extra */
+#root {
+  padding: 0;
+  max-width: none;
+  text-align: initial;
+}
+
+/* Opcional: estilos para el contenido principal */
+main {
+  max-width: 1200px;   /* contenido centrado */
+  margin: 0 auto;
+  padding: 20px;
+}
+.container {
+  max-width: 1200px; /* ancho máximo */
+  margin: 0 auto;    /* centra el contenido */
+  padding: 20px;     /* espacio interno */
+}
